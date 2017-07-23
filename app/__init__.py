@@ -1,5 +1,5 @@
 import flask
-from . import extensions, config, users
+from . import extensions, config
 from .auth import jwt
 
 
@@ -34,6 +34,7 @@ def register_extensions(app):
 
     extensions.db.init_app(app)
     extensions.jwt.init_app(app)
+    extensions.migrate.init_app(app=app,db=extensions.db)
 
 
 def register_blueprints(app):
@@ -43,4 +44,5 @@ def register_blueprints(app):
     :returns: None
 
     """
+    from . import users
     app.register_blueprint(users.blueprint)
