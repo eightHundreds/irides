@@ -1,4 +1,3 @@
-from bson.objectid import ObjectId
 from app.users import controllers
 from tests import clear_db
 
@@ -71,11 +70,6 @@ def test_update_user_with_valid_username(app, mock_user):
     assert 'updated' in controllers.create_or_update_user(
         username, password, user_id=id)
 
-
-def test_delete_user_with_invalid_id(app):
-
-    expected = {'error': 'Invalid user id.'}
-    assert controllers.delete_user(str(ObjectId())) == expected
 
 
 def test_delete_user_with_valid_id(app, mock_user):
