@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-from flask.ext.script import Manager, Shell, Server
+from flask_script import Manager, Shell, Server
 from app import create_app
 from app.extensions import db
 from flask_migrate import MigrateCommand

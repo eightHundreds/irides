@@ -25,7 +25,7 @@ def get_users(username=None):
     if not users:
         return {'no-data': ''}
 
-    return {'success': [u.to_json2() for u in users]}
+    return {'success': [u.Users_Json() for u in users]}
 
 
 def create_or_update_user(username, password, user_id=None):

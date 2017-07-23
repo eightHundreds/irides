@@ -15,6 +15,7 @@ def create_app(config_name='default'):
 
     # set the config vars using the config name and current_app
     app.config.from_object(config.config[config_name])
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     register_extensions(app)
     register_blueprints(app)
