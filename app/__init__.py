@@ -2,7 +2,6 @@ import flask
 from . import extensions, config
 from .auth import jwt
 
-
 def create_app(config_name='default'):
     """Flask app factory
 
