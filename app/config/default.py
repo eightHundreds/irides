@@ -8,6 +8,7 @@ class Config:
 
     #数据库配置
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True #当连接断开时是否提交事务
+    SQLALCHEMY_TRACK_MODIFICATIONS= False
 
     #邮件配置
     MAIL_SERVER = 'smtp.163.com'

@@ -3,16 +3,19 @@ from app.extensions import db
 
 class PicTags(db.Model):
     """PicTags model """
-    Tag_Id = db.Column(db.Integer, primary_key=True)
-    Tag = db.Column(db.String(50), unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(50), unique=True)
+    pic_id = db.Column(db.Integer, db.ForeignKey('UploadPic.id'))
 
-    def Tags_Json(self):
+    def to_json(self):
         """Returns a json representantion of the tags.
         :returns: a json object.
 
         """
-
-        return {
-            'id': str(self.Tag_Id),
-            'tag': self.Tag
+        json_tags={
+            'id': str(self.id),
+            'tag': self.tag,
+            'pic_id': self.pic_id
         }
+
+        return json_tags
