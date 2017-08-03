@@ -1,6 +1,6 @@
 from app import helpers
 from . import models
-
+from app.extensions import db
 
 def is_an_available_username(username):
     """Verify if an username is available.
@@ -9,7 +9,19 @@ def is_an_available_username(username):
     :returns: True or False
 
     """
-    return models.User.objects(username=username).first() is None
+    if models.User.query.filter_by(username=username).all():
+    	return False
+    return True
+
+def is_an_available_id(user_id):
+    """Verify if an id is available.
+
+    :returns: True or False
+
+    """
+    if models.User.query.filter_by(id=user_id).all():
+        return False
+    return True
 
 
 def get_users(username=None):
@@ -20,7 +32,7 @@ def get_users(username=None):
 
     """
     query = {} if not username else {'username': username}
-    users = models.User.objects(**query).all()
+    users = models.User.query.filter_by(**query).all()
 
     if not users:
         return {'no-data': ''}
@@ -37,26 +49,26 @@ def create_or_update_user(username, password, user_id=None):
     :returns: a dict with the operation result
 
     """
-
+    user = models.User(username = username,
+                       password = password)
     if is_an_available_username(username) is False:
-        return {'error': 'The user {!r} already exists.'.format(username)}
+        try:
+            _user = models.User.query.filter_by(username=username).first()
+            _password = _user.password
+            if _password == password:
+                db.session.add(user)
+                db.session.commit()
+                return {'updated': 'Updated the user {!r}.'.format(username)}
+            return {'error': 'The user {!r} already exists.'.format(_user.username)}
+        except Exception as e:
+            return {'error': 'Error during the operation: {}'.format(e)}
 
     try:
-        query = {'id': user_id} if user_id else {'username': username}
-        result = models.User.objects(**query).update(
-            set__username=username,
-            set__password=helpers.encrypt_password(password),
-            upsert=True,
-            full_result=True
-        )
+        db.session.add(user)
+        db.session.commit()
+        return {'created': 'Created the user {!r}.'.format(username)}
     except Exception as e:
         return {'error': 'Error during the operation: {}'.format(e)}
-
-    if result.get('updatedExisting') is False:
-        return {'created': 'Created the user {!r}.'.format(username)}
-
-    return {'updated': 'Updated the user {!r}.'.format(username)}
-
 
 def delete_user(user_id):
     """Delete an user by user id.
@@ -66,10 +78,11 @@ def delete_user(user_id):
 
     """
 
-    user = models.User.objects(id=user_id).first()
+    user = models.User.query.filter_by(id=user_id).first()
 
     if not user:
         return {'error': 'Invalid user id.'}
 
-    user.delete()
+    db.session.delete(user)
+    db.session.commit()
     return {'deleted': 'User deleted'}

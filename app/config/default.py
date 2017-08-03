@@ -2,13 +2,14 @@
 import os
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 class Config:
-    "配置基类"
     #密钥配置
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
 
     #数据库配置
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True #当连接断开时是否提交事务
-
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    HASH_ALGORITHM = 'SHA256'
+    HASH_SALT = 'QxLUF1bgIAdeQX'
     #邮件配置
     MAIL_SERVER = 'smtp.163.com'
     MAIL_PORT=465
