@@ -15,7 +15,6 @@ def create_app(config_name='default'):
     # set the config vars using the config name and current_app
     app.config.from_object(config.config[config_name])
 
-
     register_extensions(app)
     register_blueprints(app)
     jwt.set_jwt_handlers(extensions.jwt)

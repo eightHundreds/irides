@@ -1,5 +1,5 @@
 from app import helpers
-from . import models
+from .. import models
 
 
 def is_an_available_username(username):
@@ -9,9 +9,7 @@ def is_an_available_username(username):
     :returns: True or False
 
     """
-    if models.User.query_by(username=username).all():
-        return False
-    return True
+    return models.User.objects(username=username).first() is None
 
 
 def get_users(username=None):
@@ -22,12 +20,12 @@ def get_users(username=None):
 
     """
     query = {} if not username else {'username': username}
-    users = models.User.query_by(**query).all()
+    users = models.User.objects(**query).all()
 
     if not users:
         return {'no-data': ''}
 
-    return {'success': [u.to_json() for u in users]}
+    return {'success': [u.to_json2() for u in users]}
 
 
 def create_or_update_user(username, password, user_id=None):
@@ -39,29 +37,26 @@ def create_or_update_user(username, password, user_id=None):
     :returns: a dict with the operation result
 
     """
-    query = {'id': user_id} if user_id else {'username': username}
+
     if is_an_available_username(username) is False:
-        try:
-            result = models.User.objects(**query).update(
-                set__username=username,
-                set__password=helpers.encrypt_password(password),
-                upsert=True,
-                full_result=True
-            )
-            return {'updated': 'Updated the user {!r}.'.format(username)}
-        except Exception as e:
-            return {'error': 'Error during the operation: {}'.format(e)}
+        return {'error': 'The user {!r} already exists.'.format(username)}
 
     try:
-        result = models.User.objects(**query).add(
+        query = {'id': user_id} if user_id else {'username': username}
+        result = models.User.objects(**query).update(
             set__username=username,
             set__password=helpers.encrypt_password(password),
             upsert=True,
             full_result=True
         )
-        return {'created': 'Created the user {!r}.'.format(username)}
     except Exception as e:
         return {'error': 'Error during the operation: {}'.format(e)}
+
+    if result.get('updatedExisting') is False:
+        return {'created': 'Created the user {!r}.'.format(username)}
+
+    return {'updated': 'Updated the user {!r}.'.format(username)}
+
 
 def delete_user(user_id):
     """Delete an user by user id.
@@ -71,7 +66,7 @@ def delete_user(user_id):
 
     """
 
-    user = models.User.query_by(username=username).first()
+    user = models.User.objects(id=user_id).first()
 
     if not user:
         return {'error': 'Invalid user id.'}

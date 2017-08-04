@@ -6,7 +6,7 @@ from . import controllers
 
 def post_put_parser():
     """Request parser for HTTP POST or PUT.
-    :returns: flask.ext.restful.reqparse.RequestParser object
+    :returns: flask_restful.reqparse.RequestParser object
 
     """
     parse = reqparse.RequestParser()
@@ -24,7 +24,7 @@ class UsersAPI(Resource):
 
     def _post_put_parser(self):
         """Request parser for HTTP POST or PUT.
-        :returns: flask.ext.restful.reqparse.RequestParser object
+        :returns: flask_restful.reqparse.RequestParser object
 
         """
         parse = reqparse.RequestParser()
