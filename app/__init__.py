@@ -1,5 +1,5 @@
 import flask
-from . import extensions, config
+from . import extensions, config,users
 from .auth import jwt
 
 def create_app(config_name='default'):
@@ -43,5 +43,4 @@ def register_blueprints(app):
     :returns: None
 
     """
-    from . import users
     app.register_blueprint(users.blueprint)
