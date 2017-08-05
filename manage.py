@@ -8,9 +8,6 @@ from flask_migrate import Migrate,MigrateCommand
 
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
-'''
- os.getenv()来获取环境变量中的flask_config.然后执行
- '''
 
 migrate = Migrate(app, db)
 manager = Manager(app)

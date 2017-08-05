@@ -14,7 +14,7 @@ def set_jwt_handlers(jwt):
     @jwt.authentication_handler
     def authenticate(username, password):
         user = models.User.objects(username=username).first()
-        
+
         if user and helpers.verify_password(password, user.password):
             return user
         return None

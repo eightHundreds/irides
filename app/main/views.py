@@ -1,8 +1,8 @@
+'''
 from flask import render_template, flash, redirect, url_for, request, \
     current_app, abort, make_response, jsonify
 from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
-
 
 
 @app.route('/api/users', methods = ['POST'])
@@ -18,3 +18,4 @@ def new_user():
     db.session.add(user)
     db.session.commit()
     return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
+'''
