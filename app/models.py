@@ -2,13 +2,13 @@ from passlib.apps import custom_app_context as pwd_context
 from app.extensions import db
 
 class User(db.Model):
-    """User 模型 """
+    __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), index=True)
+    usrname = db.Column(db.String(80), unique=True)
     password_hash= db.Column(db.String(128))
     avator= db.Column(db.String(35), unique=True)
     email = db.Column(db.String(120), unique=True,index=True)
-    uploadpic=db.relationship('UploadPic',backref='User',lazy='dynamic')
+    picture = db.relationship('Picture', backref='user', lazy='dynamic')
     """lazy 决定了 SQLAlchemy 什么时候从数据库中加载数据"""
 
     def hash_password(self, password):
@@ -25,37 +25,35 @@ class User(db.Model):
             'email':self.email,
             'Uploadpic':self.uploadpic
         }
-
         return json_user
-class UploadPic(db.Model):
-    """UploadPic 模型 """
+
+class Picture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     dsepriction= db.Column(db.String(5000), unique=True)
     address= db.Column(db.String(35), unique=True)
-    user_id=db.Column(db.Integer,db.ForeignKey('User.id'))
-    tags = db.relationship("PicTags",backref="UploadPic",lazy='dynamic')
+    userId = db.Column(db.Integer, db.ForeignKey('User.id'))
+    tags = db.relationship(
+        'Tags', backref='picture', lazy='dynamic')
 
     def to_json(self):
         json_pic={
             'id': str(self.id),
-            'userid':self.user_id,
+            'userid':self.userId,
             'dsepriction':self.dsepriction,
             'adress': self.address,
             'tags': self.tags
         }
-
         return json_pic
-class PicTags(db.Model):
-    """PicTags 模型 """
-    id = db.Column(db.Integer, primary_key=True)
-    tag = db.Column(db.String(50), unique=True)
-    pic_id = db.Column(db.Integer, db.ForeignKey('UploadPic.id'))
+
+class Tags(db.Model):
+    id = db .Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(50))
+    picId = db.Column(db.Integer, db.ForeignKey('picture.id'))
 
     def to_json(self):
         json_tags={
             'id': str(self.id),
             'tag': self.tag,
-            'pic_id': self.pic_id
+            'picId': self.picId
         }
-
         return json_tags
