@@ -2,6 +2,7 @@ import pytest
 from app import models, helpers
 from app.extensions import db
 
+
 @pytest.yield_fixture(scope='function')
 def mock_user():
     """Returns a function (clojuse) to createa a mock.

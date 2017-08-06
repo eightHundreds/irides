@@ -34,7 +34,7 @@ def register_extensions(app):
 
     extensions.db.init_app(app)
     extensions.jwt.init_app(app)
-    extensions.migrate.init_app(app=app,db=extensions.db)
+    extensions.migrate.init_app(app=app, db=extensions.db)
 
 
 def register_blueprints(app):

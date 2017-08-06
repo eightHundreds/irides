@@ -2,8 +2,7 @@ import json
 
 import pytest
 
-from tests import clear_db
-from . import jrequest, get_jwt_auth_header
+from . import jrequest
 
 unauthorized_scenarios = [
     ['GET', 'api/users', 'Authorization Required', 401],

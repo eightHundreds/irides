@@ -2,6 +2,7 @@ from app import helpers
 from app import models
 from app.extensions import db
 
+
 def is_an_available_username(username):
     """Verify if an username is available.
     :username: a string object
@@ -11,6 +12,7 @@ def is_an_available_username(username):
         return False
     return True
 
+
 def is_an_available_id(user_id):
     """Verify if an id is available.
     :returns: True or False
@@ -18,6 +20,7 @@ def is_an_available_id(user_id):
     if models.User.query.filter_by(id=user_id).all():
         return False
     return True
+
 
 def get_users(username=None):
     """Get all users info. Accepts specify an username.
@@ -40,8 +43,8 @@ def create_or_update_user(username, password, user_id=None):
     :user_id: a str object. Indicates an update.
     :returns: a dict with the operation result
     """
-    user = models.User(username = username,
-                       password = password)
+    user = models.User(username=username,
+                       password=password)
     if is_an_available_username(username) is False:
         try:
             _user = models.User.query.filter_by(username=username).first()
@@ -60,6 +63,7 @@ def create_or_update_user(username, password, user_id=None):
         return {'created': 'Created the user {!r}.'.format(username)}
     except Exception as e:
         return {'error': 'Error during the operation: {}'.format(e)}
+
 
 def delete_user(user_id):
     """Delete an user by user id.
