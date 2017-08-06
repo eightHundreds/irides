@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/bayi/appdata/local/temp/36.html -->
+<!-- saved from url=(0048)file:///C:/Users/bayi/appdata/local/temp/20.html -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {
   max-width: 980px;
   border: 1px solid #ddd;
@@ -1016,19 +1016,20 @@ body .markdown-body
     page-break-after: avoid;
   }
 }
-</style><title>数据库设计</title></head><body><article class="markdown-body"><h1 id="_1"><a name="user-content-_1" href="file:///C:/Users/bayi/appdata/local/temp/36.html#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>多对多关系</h1>
+</style><title>数据库设计</title></head><body><article class="markdown-body"><h1 id="_1"><a name="user-content-_1" href="file:///C:/Users/bayi/appdata/local/temp/20.html#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>多对多关系</h1>
 <p>1.用户表</p>
 <p>ID 主键    </p>
 <p>Username           </p>
-<p>Password          </p>
+<p>Password</p>
+<p>UserAvator          </p>
 <p>Email               </p>
-<h1 id="_2"><a name="user-content-_2" href="file:///C:/Users/bayi/appdata/local/temp/36.html#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>…</h1>
+<h1 id="_2"><a name="user-content-_2" href="file:///C:/Users/bayi/appdata/local/temp/20.html#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>…</h1>
 <p>2.图片</p>
 <p>ID 主键  </p>
 <p>user_id     </p>
 <p>description          </p>
 <p>Address  (图片储存路径或者第三方链接) </p>
-<h1 id="_3"><a name="user-content-_3" href="file:///C:/Users/bayi/appdata/local/temp/36.html#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>…</h1>
+<h1 id="_3"><a name="user-content-_3" href="file:///C:/Users/bayi/appdata/local/temp/20.html#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>…</h1>
 <p>3.标签</p>
 <p>ID 主键 </p>
 <p>tag</p>
@@ -1045,6 +1046,7 @@ body .markdown-body
 <th>ID</th>
 <th>Username</th>
 <th>Password</th>
+<th>UserAvator</th>
 <th>Email</th>
 </tr>
 </thead>
@@ -1053,18 +1055,21 @@ body .markdown-body
 <td>1</td>
 <td>bayi</td>
 <td>123456</td>
+<td>upload/avator1jpg</td>
 <td><a href="mailto:328588917@qq.com">328588917@qq.com</a></td>
 </tr>
 <tr>
 <td>2</td>
 <td>babai</td>
 <td>123654</td>
+<td>upload/avator2.jpg</td>
 <td><a href="mailto:123456@qq.com">123456@qq.com</a></td>
 </tr>
 <tr>
 <td>3</td>
 <td>xiaoming</td>
 <td>654321</td>
+<td>upload/avator3.jpg</td>
 <td><a href="mailto:123654@qq.com">123654@qq.com</a></td>
 </tr>
 </tbody>
@@ -1085,19 +1090,19 @@ body .markdown-body
 <td>1</td>
 <td>1</td>
 <td>第一张图片</td>
-<td>E://upload/1.jpg</td>
+<td>upload/1.jpg</td>
 </tr>
 <tr>
 <td>2</td>
 <td>2</td>
 <td>第二张图片</td>
-<td>E://upload/2.jpg</td>
+<td>upload/2.jpg</td>
 </tr>
 <tr>
 <td>3</td>
 <td>3</td>
 <td>第三张图片</td>
-<td>E://upload/3.jpg</td>
+<td>upload/3.jpg</td>
 </tr>
 </tbody>
 </table>
@@ -1137,12 +1142,12 @@ body .markdown-body
 </thead>
 <tbody>
 <tr>
-<td>pic_id  1</td>
+<td>pic_id 1</td>
 <td>pic_id  2</td>
 <td>pic_id  1</td>
 </tr>
 <tr>
-<td>tag_id  1</td>
+<td>tag_id 1</td>
 <td>tag_id  1</td>
 <td>tag_id  2</td>
 </tr>

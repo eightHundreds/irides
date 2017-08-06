@@ -1,4 +1,7 @@
+[![Build Status](https://travis-ci.org/eightHundreds/irides.svg?branch=master)](https://travis-ci.org/eightHundreds/irides)
+
 fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template)
+
 
 # 开发注意点
 
