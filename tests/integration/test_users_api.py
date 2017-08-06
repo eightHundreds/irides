@@ -6,14 +6,12 @@ from tests import clear_db
 from . import jrequest, get_jwt_auth_header
 
 unauthorized_scenarios = [
-    ['GET', '/users', 'Authorization Required', 401],
+    ['GET', 'api/users', 'Authorization Required', 401],
 ]
 
 
 @pytest.mark.parametrize(
     'method, url, error, status_code ', unauthorized_scenarios)
-
-
 def test_unauthorized_request(method, url, error, status_code, client):
 
     response = jrequest(method, url, client)
