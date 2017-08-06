@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
-from app import helpers, utils
+from app import helpers, extensions
 from . import controllers
 
 
@@ -93,7 +93,6 @@ class UserAPI(Resource):
         :returns:
 
         """
-
-        if not utils.is_a_valid_object_id(user_id):
+        if controllers.is_an_available_id:
             return {'error': 'Invalid user id.'}
         return controllers.delete_user(user_id)

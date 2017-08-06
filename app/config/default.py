@@ -10,12 +10,14 @@ class Config:
 
     #数据库配置
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True #当连接断开时是否提交事务
-    SQLALCHEMY_TRACK_MODIFICATIONS= False 
+    SQLALCHEMY_TRACK_MODIFICATIONS= False
     '''
     如果设置成 True (默认情况)，Flask-SQLAlchemy 将会追踪对象的修改并且发送信号。
     这需要额外的内存,如果不必要的可以禁用它
     '''
-
+    #PASSLIB
+    HASH_ALGORITHM = 'SHA256'
+    HASH_SALT = 'QxLUF1bgIAdeQX'
     #邮件配置
     MAIL_SERVER = 'smtp.163.com'
     MAIL_PORT=465

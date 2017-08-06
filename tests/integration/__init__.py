@@ -1,6 +1,5 @@
 import json
 
-
 def get_jwt_auth_header(username, password, client):
     """Executes the process to create a jwt header. It's just a way to avoid
     repeated code in tests.
@@ -9,7 +8,7 @@ def get_jwt_auth_header(username, password, client):
     """
 
     payload = {'username': username, 'password': password}
-    auth_response = client.post('/api/auth', data=json.dumps(payload))
+    auth_response = client.post('/auth', data=json.dumps(payload))
 
     if auth_response.status_code != 200:
         raise RuntimeError(auth_response.data.decode('utf-8'))
@@ -20,7 +19,7 @@ def get_jwt_auth_header(username, password, client):
     }
 
 
-def jrequest(method, url, client, headers={}, data=None):
+def jrequest(method, url, requests, headers={}, data=None):
     """Executes json requests.
 
     :method: 'GET', 'POST', 'PUT' or 'DELETE' (case sensitive)
@@ -34,10 +33,10 @@ def jrequest(method, url, client, headers={}, data=None):
     """
 
     allowed_methods = {
-        'GET': lambda: client.get(url, headers=headers),
-        'POST': lambda: client.post(url, headers=headers, data=data),
-        'PUT': lambda: client.put(url, headers=headers, data=data),
-        'DELETE': lambda: client.delete(url, headers=headers),
+        'GET': lambda: requests.get(url, headers=headers),
+        'POST': lambda: requests.post(url, headers=headers, data=data),
+        'PUT': lambda: requests.put(url, headers=headers, data=data),
+        'DELETE': lambda: requests.delete(url, headers=headers),
     }
 
     if 'Content-Type' not in headers:

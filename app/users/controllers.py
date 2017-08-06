@@ -19,7 +19,6 @@ def is_an_available_id(user_id):
         return False
     return True
 
-
 def get_users(username=None):
     """Get all users info. Accepts specify an username.
     :username: a string object
