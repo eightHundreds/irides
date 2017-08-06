@@ -3,7 +3,7 @@ import functools
 import json
 import flask
 from passlib import hash
-from flask.ext.restful import Api
+from flask_restful import Api
 from flask_jwt import JWTError
 
 

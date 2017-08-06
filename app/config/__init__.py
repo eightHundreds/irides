@@ -5,5 +5,6 @@ from .testing import TestingConfig
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
-    'default': DevelopmentConfig
+    'default': DevelopmentConfig,
+    #'product'
 }

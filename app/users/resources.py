@@ -1,4 +1,4 @@
-from flask.ext.restful import Resource, reqparse
+from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
 from app import helpers, utils
 from . import controllers
@@ -6,7 +6,7 @@ from . import controllers
 
 def post_put_parser():
     """Request parser for HTTP POST or PUT.
-    :returns: flask.ext.restful.reqparse.RequestParser object
+    :returns: flask_restful.reqparse.RequestParser object
 
     """
     parse = reqparse.RequestParser()
@@ -24,7 +24,7 @@ class UsersAPI(Resource):
 
     def _post_put_parser(self):
         """Request parser for HTTP POST or PUT.
-        :returns: flask.ext.restful.reqparse.RequestParser object
+        :returns: flask_restful.reqparse.RequestParser object
 
         """
         parse = reqparse.RequestParser()
