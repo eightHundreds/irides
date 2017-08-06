@@ -1,5 +1,11 @@
 fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template)
 
+# 开发注意点
+
+之前设计时是把每个业务模块的model放到相应的业务模块文件夹下,比如`app/users/model.py`
+在统一用`app/models.py`来引用每个业务的model类,使用时只需要`from app import model`,`model.User.dosomething`
+
+但现在有人把所有类放到`app/models.py`,但这没关系后面的开发会证明哪种设计更合适,现在只要记住,所有对model的引用都通过`from app import model`方式,这样后面如果要修改也比较方便
 
 
 # 数据库迁移,命令

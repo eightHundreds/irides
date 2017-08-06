@@ -1,5 +1,5 @@
 from app import helpers
-from .. import models
+from app import models
 from app.extensions import db
 
 def is_an_available_username(username):

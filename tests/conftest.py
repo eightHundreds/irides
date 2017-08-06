@@ -11,7 +11,7 @@ def app(request):
 
     """
 
-    app = create_app('development')
+    app = create_app('testing')
     ctx = app.app_context()
 
     ctx.push()

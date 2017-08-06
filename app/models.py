@@ -5,17 +5,17 @@ class User(db.Model):
     __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
-    password_hash= db.Column(db.String(128))
+    password= db.Column(db.String(128))
     avator= db.Column(db.String(35), unique=True)
     email = db.Column(db.String(120), unique=True,index=True)
     picture = db.relationship('Picture', backref='user', lazy='dynamic')
     """lazy 决定了 SQLAlchemy 什么时候从数据库中加载数据"""
 
     def hash_password(self, password):
-        self.password_hash = pwd_context.encrypt(password)
+        self.password = pwd_context.encrypt(password)
 
     def verify_password(self, password):
-        return pwd_context.verify(password, self.password_hash)
+        return pwd_context.verify(password, self.password)
 
     def to_json(self):
         json_user= {
@@ -23,7 +23,7 @@ class User(db.Model):
             'username': self.username,
             'avator': self.avator,
             'email':self.email,
-            'picture':self.uploadpic
+            #'picture':self.picture
         }
         return json_user
 
