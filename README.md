@@ -1,9 +1,10 @@
-fork from Flask REST Template
+fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template)
 
 
 
 # 数据库迁移,命令
-
+注意在迁移中sqlite不支持删除数据库字段,所以要删除字段的话几乎是要删除所有的版本记录(其实删到这个字段添加的记录就行)
+每个migrate都要提交信息
 ```
 python manage.py db stamp 版本号 强制修改当前版本
 python manage.py db init 创建migrate文件夹 注意这时候数据库是里面的version文件夹是空de

@@ -4,7 +4,7 @@ from app.extensions import db
 class User(db.Model):
     __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
-    usrname = db.Column(db.String(80), unique=True)
+    username = db.Column(db.String(80), unique=True)
     password_hash= db.Column(db.String(128))
     avator= db.Column(db.String(35), unique=True)
     email = db.Column(db.String(120), unique=True,index=True)
@@ -23,7 +23,7 @@ class User(db.Model):
             'username': self.username,
             'avator': self.avator,
             'email':self.email,
-            'Uploadpic':self.uploadpic
+            'picture':self.uploadpic
         }
         return json_user
 

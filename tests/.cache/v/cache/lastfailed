@@ -1,0 +1,3 @@
+{
+  "unit/test_users_controllers.py::test_is_an_available_username_with_unavailable_user": true
+}

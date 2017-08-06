@@ -2,7 +2,9 @@
 import os
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 class Config:
-    "配置基类"
+    """
+    配置基类
+    """
     #密钥配置
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you cannot guess me'
 
@@ -18,7 +20,10 @@ class Config:
     MAIL_SERVER = 'smtp.163.com'
     MAIL_PORT=465
     MAIL_USE_SSL=True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')#为了安全,不要把隐私信息直接写到
+    # 为了安全,不要把隐私信息直接写到这里会被git记录
+    # 可以放到production.py,并用gitignore忽略该文件,或者就像下面这样放到系统环境变量
+    # 注意pycharm可直接配置运行时环境变量,这样无需真的修改操作系统的环境变量
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     FLASKY_MAIL_SENDER = os.environ.get('MAIL_USERNAME')
