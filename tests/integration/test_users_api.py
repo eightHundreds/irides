@@ -2,26 +2,22 @@ import json
 
 import pytest
 
-from tests import clear_db
-from . import jrequest, get_jwt_auth_header
-from app.models import User
+from . import jrequest
 
 unauthorized_scenarios = [
-    ['GET', '/api/users', 'Authorization Required', 401],
+    ['GET', 'api/users', 'Authorization Required', 401],
 ]
 
 
 @pytest.mark.parametrize(
     'method, url, error, status_code ', unauthorized_scenarios)
-
-
 def test_unauthorized_request(method, url, error, status_code, client):
 
     response = jrequest(method, url, client)
 
     assert response.status_code == status_code
     assert json.loads(response.data.decode('utf-8'))['error'] == error
-
+'''
 
 def test_get_users_without_username(client, mock_user):
     clear_db()
@@ -29,7 +25,7 @@ def test_get_users_without_username(client, mock_user):
     jwt_header = get_jwt_auth_header('user', 'password', client)
 
     response = json.loads(jrequest(
-        'GET', '/api/users', client, jwt_header).data.decode('utf-8'))
+        'GET', '/users', client, jwt_header).data.decode('utf-8'))
     response = json.loads(response)
 
     expected = {
@@ -57,7 +53,7 @@ def test_get_users_specifing_username(client, mock_user):
         'status_code': 200,
         'data': [{
             'id': str(user.id),
-            'username': 'user'
+            'username': user.username
         }],
         'description': 'Successful Operation',
     }
@@ -139,11 +135,9 @@ def test_update_an_user_valid_username(client, mock_user):
     clear_db()
 
     user = mock_user('user', 'password')
-    _id = User.query.filter_by(username=user.username).first().id
-
     jwt_header = get_jwt_auth_header('user', 'password', client)
     payload = json.dumps({
-        'user_id': str(_id),
+        'user_id': str(user.id),
         'username': 'it works',
         'password': 'password'
     })
@@ -186,15 +180,13 @@ def test_delete_an_user_valid_user_id(client, mock_user):
 
     clear_db()
     user_to_delete = mock_user('delete', 'delete')
-    
     # user_to_auth
     mock_user('user', 'password')
-    _id = User.query.filter_by(username=user_to_delete.username).first().id
 
     jwt_header = get_jwt_auth_header('user', 'password', client)
 
     response = jrequest(
-        'DELETE', '/api/user/{}'.format(_id), client, jwt_header)
+        'DELETE', '/api/user/{}'.format(user_to_delete.id), client, jwt_header)
     response = json.loads(response.data.decode('utf-8'))
     response = json.loads(response)
 
@@ -205,3 +197,4 @@ def test_delete_an_user_valid_user_id(client, mock_user):
     }
 
     assert sorted(response.items()) == sorted(expected.items())
+'''
