@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/eightHundreds/irides.svg?branch=master)](https://travis-ci.org/eightHundreds/irides)
+[![codebeat badge](https://codebeat.co/badges/d536af42-3a52-4dc8-9a13-4465112bed24)](https://codebeat.co/projects/github-com-eighthundreds-irides-master)
 
 fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template)
 
@@ -10,6 +11,25 @@ fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template
 
 但现在有人把所有类放到`app/models.py`,但这没关系后面的开发会证明哪种设计更合适,现在只要记住,所有对model的引用都通过`from app import model`方式,这样后面如果要修改也比较方便
 
+#项目结构说明
+
+|- app
+	|- users 用户模块
+		|- models.py 用户model类型
+		|- controllers.py 用户模块业务逻辑
+		|- resources.py 对外api
+	...
+|- migrations 数据库迁移文件
+|- doc 文档
+|- tests 测试代码
+	|- conftest.py 测试固件(Test Fixture)
+	|- pytest.ini pytest配置
+	|- integration 集成测试
+	|- mocks 伪造类
+	|- unit 单元测试
+|- .travis.yml 持续集成配置
+|- .codebeatignore 在线静态代码检测配置
+|-
 
 # 数据库迁移,命令
 注意在迁移中sqlite不支持删除数据库字段,所以要删除字段的话几乎是要删除所有的版本记录(其实删到这个字段添加的记录就行)
