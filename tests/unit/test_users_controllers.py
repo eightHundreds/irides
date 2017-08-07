@@ -1,9 +1,6 @@
-import pytest
-
 from app.users import controllers
 from tests import clear_db
 from app import helpers
-
 
 def test_is_an_available_username_with_available_user(app):
     clear_db()
@@ -21,19 +18,18 @@ def test_get_users_no_data(app):
     assert controllers.get_users() == {'no-data': ''}
 
 
+
 def test_get_users_with_data(app, mock_user):
     clear_db()
     user = mock_user()
     expected = {
         'success': [{
             'id': '1',
-            'username': 'mock-user',
-            'email': 'test@qq.com',
-            'avator': '',
+            'username': 'mock-user'
         }]
     }
-    result = controllers.get_users()
-    assert controllers.get_users(username='mock-user') == expected
+
+    assert controllers.get_users() == expected
 
 
 def test_get_users_with_data_and_specific_username(app, mock_user):
@@ -42,16 +38,13 @@ def test_get_users_with_data_and_specific_username(app, mock_user):
     expected = {
         'success': [{
             'id': '1',
-            'username': 'mock-user',
-            'email': 'test@qq.com',
-            'avator': '',
+            'username': 'mock-user'
         }]
     }
 
     assert controllers.get_users(username='mock-user') == expected
 
 
-@pytest.mark.skip(reason="这个api逻辑有问题")
 def test_create_user_with_invalid_username(app, mock_user):
     clear_db()
     user = mock_user()
@@ -70,13 +63,14 @@ def test_create_user_with_valid_username(app):
     assert 'created' in controllers.create_or_update_user(username, password)
 
 
-@pytest.mark.skip(reason="这个api逻辑有问题")
 def test_update_user_with_valid_username(app, mock_user):
     clear_db()
     user = mock_user()
-    username, password = 'mock-user', helpers.encrypt_password('mock-user')
 
-    assert 'updated' in controllers.create_or_update_user(username, password, user.id)
+    username, password, user_id = 'mock-user', 'mock-user', user.id
+
+    assert 'updated' in controllers.create_or_update_user(username, password,user_id)
+
 
 
 def test_delete_user_with_valid_id(app, mock_user):
