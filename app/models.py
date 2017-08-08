@@ -1,4 +1,4 @@
-from passlib.apps import custom_app_context as pwd_context
+from passlib.apps import custom_app_context as pwd_context #PassLib库对密码进行hash
 from app.extensions import db
 
 class User(db.Model):
@@ -27,33 +27,35 @@ class User(db.Model):
         }
         return json_user
 
+#关联表
+relation = db.Table('relation',
+    db.Column('tags_id', db.Integer, db.ForeignKey('tags.id'),primary_key=True),
+    db.Column('picture_id', db.Integer, db.ForeignKey('picture.id'),primary_key=True)
+)
+
 class Picture(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     dsepriction= db.Column(db.String(5000), unique=True)
     address= db.Column(db.String(35), unique=True)
     userId = db.Column(db.Integer, db.ForeignKey('User.id'))
     tags = db.relationship(
-        'Tags', backref='picture', lazy='dynamic')
-
+        'Tags', secondary=relation,backref=db.backref('picture', lazy='dynamic'))
     def to_json(self):
         json_pic={
             'id': str(self.id),
             'userid':self.userId,
             'dsepriction':self.dsepriction,
             'adress': self.address,
-            'tags': self.tags
         }
         return json_pic
 
 class Tags(db.Model):
     id = db .Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(50))
-    picId = db.Column(db.Integer, db.ForeignKey('picture.id'))
 
     def to_json(self):
         json_tags={
             'id': str(self.id),
-            'tag': self.tag,
-            'picId': self.picId
+            'tag': self.tag
         }
         return json_tags
