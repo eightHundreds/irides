@@ -32,4 +32,4 @@ def set_jwt_handlers(jwt):
 
     @jwt.user_handler
     def load_user(payload):
-        return models.User.objects(id=payload['user_id']).first()
+        return models.User.query.filter_by(id=payload['user_id']).first()
