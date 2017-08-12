@@ -2,8 +2,8 @@ import json
 
 import pytest
 
-from . import get_jwt_auth_header
-from . import jrequest
+
+from . import jrequest, get_jwt_auth_header
 from tests import clear_db
 
 unauthorized_scenarios = [
@@ -163,6 +163,7 @@ def test_delete_an_user_valid_user_id(client, mock_user):
     }
 
     assert sorted(response.items()) == sorted(expected.items())
+
 
 
 

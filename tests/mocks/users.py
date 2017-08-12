@@ -3,12 +3,12 @@ from app import models, helpers
 from app.extensions import db
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.fixture(scope='function')
 def mock_user():
     """Returns a function (clojuse) to createa a mock.
     """
 
-    user = None
+    _user = None
 
     def make_mock_user(username=None, password=None, avator=None, email=None):
         """The real mock. Creates a object users.models.User .All parameters
@@ -21,19 +21,22 @@ def mock_user():
 
         """
 
-        nonlocal user
+        nonlocal _user
 
-        user = models.User(
+        _user = models.User(
             username=username or 'mock-user',
             password=helpers.encrypt_password(password or 'mock-user'),
             email=email or "test@qq.com",
             avator=avator or "",
         )
 
-        db.session.add(user)
+        db.session.add(_user)
         db.session.commit()
-        return user
 
-    yield make_mock_user
+        return _user
+
+    return make_mock_user
+
 
 #    user.delete() if user else None
+
