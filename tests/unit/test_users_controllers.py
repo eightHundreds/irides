@@ -51,32 +51,30 @@ def test_get_users_with_data_and_specific_username(app, mock_user):
     assert controllers.get_users(username='mock-user') == expected
 
 
-@pytest.mark.skip(reason="这个api逻辑有问题")
 def test_create_user_with_invalid_username(app, mock_user):
     clear_db()
     user = mock_user()
-    username, password = 'mock-user', 'password'
+    username, password, avator, email = 'mock-user', 'password', '', 'test@qq.com'
     expected = {
         'error': 'The user {!r} already exists.'.format('mock-user')
     }
 
-    assert controllers.create_or_update_user(username, password) == expected
+    assert controllers.create_or_update_user(username, password,avator,email) == expected
 
 
 def test_create_user_with_valid_username(app):
     clear_db()
-    username, password = 'valid user', 'password'
+    username, password, avator, email = 'valid user', 'password', '', 'test@qq.com'
 
-    assert 'created' in controllers.create_or_update_user(username, password)
+    assert 'created' in controllers.create_or_update_user(username, password,avator,email)
 
 
-@pytest.mark.skip(reason="这个api逻辑有问题")
 def test_update_user_with_valid_username(app, mock_user):
     clear_db()
     user = mock_user()
-    username, password = 'mock-user', helpers.encrypt_password('mock-user')
+    username, password, avator, email = 'mock-user', 'mock-user', '', 'test@qq.com'
 
-    assert 'updated' in controllers.create_or_update_user(username, password, user.id)
+    assert 'updated' in controllers.create_or_update_user(username, password, '', 'test@qq.com', user.id)
 
 
 def test_delete_user_with_valid_id(app, mock_user):
@@ -84,4 +82,4 @@ def test_delete_user_with_valid_id(app, mock_user):
     user = mock_user()
     expected = {'deleted': 'User deleted'}
 
-    assert controllers.delete_user(str(1)) == expected
+    assert controllers.delete_user(user.id) == expected

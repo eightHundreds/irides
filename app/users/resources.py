@@ -14,7 +14,10 @@ def post_put_parser():
         'username', type=str, location='json', required=True)
     parse.add_argument(
         'password', type=str, location='json', required=True)
-
+    parse.add_argument(
+        'avator', type=str, location='json', required=True)
+    parse.add_argument(
+        'email', type=str, location='json', required=True)
     return parse
 
 
@@ -60,10 +63,9 @@ class UsersAPI(Resource):
 
         parse = post_put_parser()
         args = parse.parse_args()
-        username, password = args['username'], args['password']
+        username, password, avator, email = args['username'], args['password'], args['avator'], args['email']
 
-        return controllers.create_or_update_user(username, password)
-
+        return controllers.create_or_update_user(username, password, avator, email)
 
 class UserAPI(Resource):
 
@@ -81,10 +83,10 @@ class UserAPI(Resource):
         parse.add_argument('user_id', type=str, location='json', required=True)
         args = parse.parse_args()
 
-        username, password = args['username'], args['password']
+        username, password, avator, email = args['username'], args['password'], args['avator'], args['email']
         user_id = args['user_id']
 
-        return controllers.create_or_update_user(username, password, user_id)
+        return controllers.create_or_update_user(username, password, avator, email, user_id)
 
     @jwt_required()
     @helpers.standardize_api_response

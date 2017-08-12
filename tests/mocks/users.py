@@ -10,7 +10,7 @@ def mock_user():
 
     user = None
 
-    def make_mock_user(username=None, password=None):
+    def make_mock_user(username=None, password=None, avator=None, email=None):
         """The real mock. Creates a object users.models.User .All parameters
         are optionals, by default uses the username 'mock-user', the password
         is the same value.
@@ -23,14 +23,14 @@ def mock_user():
 
         nonlocal user
 
-        _user = models.User(
+        user = models.User(
             username=username or 'mock-user',
             password=helpers.encrypt_password(password or 'mock-user'),
-            email="test@qq.com",
-            avator="",
+            email=email or "test@qq.com",
+            avator=avator or "",
         )
 
-        user = db.session.add(_user)
+        db.session.add(user)
         db.session.commit()
 
         return _user
