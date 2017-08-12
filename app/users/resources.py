@@ -93,6 +93,6 @@ class UserAPI(Resource):
         :returns:
 
         """
-        if controllers.is_an_available_id:
+        if controllers.is_an_available_id(user_id):
             return {'error': 'Invalid user id.'}
         return controllers.delete_user(user_id)

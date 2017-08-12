@@ -44,5 +44,6 @@ def register_blueprints(app):
     :returns: None
 
     """
-    from . import users
+    from . import users, pictures
     app.register_blueprint(users.blueprint)
+    app.register_blueprint(pictures.blueprint)

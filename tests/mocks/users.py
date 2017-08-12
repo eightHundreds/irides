@@ -3,7 +3,7 @@ from app import models, helpers
 from app.extensions import db
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.fixture(scope='function')
 def mock_user():
     """Returns a function (clojuse) to createa a mock.
     """
@@ -32,8 +32,11 @@ def mock_user():
 
         user = db.session.add(_user)
         db.session.commit()
-        return user
 
-    yield make_mock_user
+        return _user
+
+    return make_mock_user
+
 
 #    user.delete() if user else None
+
