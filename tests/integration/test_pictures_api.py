@@ -39,7 +39,7 @@ def test_get_pictures(client, mock_user, mock_picture):
     response = json.loads(response)
 
     templist = []
-    for tag in pic.tags.all():
+    for tag in pic.tags:
         templist.append(tag.to_json())
 
     expected = {
