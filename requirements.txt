@@ -22,3 +22,5 @@ six==1.10.0
 SQLAlchemy==1.1.11
 Werkzeug==0.12.2
 WTForms==2.1
+flask-restful-swagger-2==0.35
+Flask-Cors==3.0.3

@@ -1,13 +1,16 @@
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
-from app import helpers, extensions
+from flask_restful_swagger_2 import swagger
+
+from app import helpers, extensions, UserLoginSchema
 from . import controllers
+
+
 
 
 def post_put_parser():
     """Request parser for HTTP POST or PUT.
     :returns: flask_restful.reqparse.RequestParser object
-
     """
     parse = reqparse.RequestParser()
     parse.add_argument(
@@ -22,7 +25,6 @@ def post_put_parser():
 
 
 class UsersAPI(Resource):
-
     """An API to get or create users."""
 
     def _post_put_parser(self):
@@ -38,6 +40,23 @@ class UsersAPI(Resource):
 
         return parse
 
+    @swagger.doc({
+        'tags': ['user'],
+        'description': '获得用户',
+        'parameters': [
+            {
+                'name': 'username',
+                'description': '用户名',
+                'in': 'path',
+                'type': 'string'
+            }
+        ],
+        'responses': {
+            '200': {
+                'description': 'User',
+            }
+        }
+    })
     @jwt_required()
     @helpers.standardize_api_response
     def get(self, username=None):
@@ -67,8 +86,8 @@ class UsersAPI(Resource):
 
         return controllers.create_or_update_user(username, password, avator, email)
 
-class UserAPI(Resource):
 
+class UserAPI(Resource):
     """An API to update or delete an user. """
 
     @jwt_required()

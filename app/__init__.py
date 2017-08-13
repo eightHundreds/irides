@@ -1,4 +1,7 @@
 import flask
+from flask_restful_swagger_2 import get_swagger_blueprint
+
+from app.auth.jwt import UserLoginSchema
 from . import extensions, config
 from .auth import jwt
 
@@ -18,6 +21,7 @@ def create_app(config_name='default'):
 
     register_extensions(app)
     register_blueprints(app)
+    append_doc(app)
     jwt.set_jwt_handlers(extensions.jwt)
 
     return app
@@ -31,10 +35,11 @@ def register_extensions(app):
     :returns: None
 
     """
-
+    # 注意大小写,JWT是类,jwt才是对象
     extensions.db.init_app(app)
     extensions.jwt.init_app(app)
     extensions.migrate.init_app(app=app, db=extensions.db)
+    extensions.cors.init_app(app=app)
 
 
 def register_blueprints(app):
@@ -47,3 +52,83 @@ def register_blueprints(app):
     from . import users, pictures
     app.register_blueprint(users.blueprint)
     app.register_blueprint(pictures.blueprint)
+
+
+def append_doc(app):
+    """
+    从api中获得文档,并统一添加到一个blueprint中
+    :param app:
+    :return:
+    """
+
+    docs = []
+
+    def append_custom_path(url, operator):
+        nonlocal docs
+
+    from . import users, pictures
+    docs.append(users.api.get_swagger_doc())
+    docs.append(pictures.api.get_swagger_doc())
+
+    #特别的为JWT的登入接口 添加文档
+    if len(docs) == 0:
+        return
+    doc = docs[0]
+    doc['definitions'].update({
+        UserLoginSchema.__name__:UserLoginSchema.definitions()
+    })
+    doc['paths'].update({
+        '/auth': {
+            'post': {
+                'tags': ['auth'],
+                'description': 'login',
+                'summary': '登入',
+                'parameters': [
+                    {
+                        'description': '',
+                        'in': 'body',
+                        'name': 'body',
+                        'schema': {
+                            "$ref": "#/definitions/UserLoginSchema"
+                        }
+                    },
+                ],
+                'responses': {
+                    '200': {
+                        'description': 'ok'
+                    }
+                }
+            }
+        }
+    })
+
+
+
+    # 下面所有的配置只会影响最后生成的文档
+    app.register_blueprint(
+        get_swagger_blueprint(docs,
+                              '/api/swagger',  # 使用mydomain.com/api/swagger.json 访问文档
+                              title='irides Api文档',
+                              api_version='1',
+                              tags=[{
+                                  'name': 'picture',
+                                  'description': '图片'
+                              }, {
+                                  'name': 'auth',
+                                  'description': '授权'
+                              }, {
+                                  'name': 'user',
+                                  'description': '用户'
+                              }],
+                              base_path='/api',
+                              # 请求前缀,最后所有的请求都是mydomain.com/base_path/....
+                              schemes=['http'],
+                              security_definitions={
+                                  'jwt': {
+                                      "type": "apiKey",
+                                      "name": "Authorization",
+                                      "in": "header",
+                                      "description": "需要添加:'token AccessToken'不包括引号"
+                                  }
+                              }
+                              ))

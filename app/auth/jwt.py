@@ -1,6 +1,20 @@
 import datetime
 from flask import current_app
 from app import helpers, models
+from flask_restful_swagger_2 import swagger, Schema
+
+
+class UserLoginSchema(Schema):
+    type = 'object'
+    properties = {
+        'username': {
+            'type': 'string',
+            "example": 'something'
+        },
+        'password': {
+            'type': 'object'
+        }
+    }
 
 
 def set_jwt_handlers(jwt):
@@ -8,7 +22,8 @@ def set_jwt_handlers(jwt):
     :jwt: flask_jwt.JWT object
     :returns: None
     """
-    #注意这里是个函数不是类,不要觉得找不到jwt在哪定义
+
+    # 注意这里是个函数不是类,不要觉得找不到jwt在哪定义
 
     @jwt.authentication_handler
     def authenticate(username, password):
