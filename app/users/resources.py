@@ -1,11 +1,10 @@
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
 from flask_restful_swagger_2 import swagger
-
+from flask import current_app,request
 from app import helpers, extensions, UserLoginSchema
+from app.helpers import SwgHelper
 from . import controllers
-
-
 
 
 def post_put_parser():
@@ -14,49 +13,28 @@ def post_put_parser():
     """
     parse = reqparse.RequestParser()
     parse.add_argument(
-        'username', type=str, location='json', required=True)
+        'username', type=str, location='form', required=True)
     parse.add_argument(
-        'password', type=str, location='json', required=True)
+        'password', type=str, location='form', required=True)
     parse.add_argument(
-        'avator', type=str, location='json', required=True)
+        'avator', type=str, location='form', required=False)
     parse.add_argument(
-        'email', type=str, location='json', required=True)
+        'email', type=str, location='form', required=False)
     return parse
 
 
 class UsersAPI(Resource):
     """An API to get or create users."""
 
-    def _post_put_parser(self):
-        """Request parser for HTTP POST or PUT.
-        :returns: flask_restful.reqparse.RequestParser object
-
-        """
-        parse = reqparse.RequestParser()
-        parse.add_argument(
-            'username', type=str, location='json', required=True)
-        parse.add_argument(
-            'password', type=str, location='json', required=True)
-
-        return parse
-
-    @swagger.doc({
-        'tags': ['user'],
-        'description': '获得用户',
-        'parameters': [
-            {
-                'name': 'username',
-                'description': '用户名',
-                'in': 'path',
-                'type': 'string'
-            }
+    @swagger.doc(SwgHelper.Operation(
+        tags=['user'],
+        description='获得用户',
+        parameters=[
+            SwgHelper.Parameter('username')
         ],
-        'responses': {
-            '200': {
-                'description': 'User',
-            }
-        }
-    })
+        responses={
+            '200': SwgHelper.Response(description="成功")
+        }))
     @jwt_required()
     @helpers.standardize_api_response
     def get(self, username=None):
@@ -66,9 +44,24 @@ class UsersAPI(Resource):
         :returns: One or all available users.
 
         """
+        parse = reqparse.RequestParser()
+        parse.add_argument('username', type=str, location='args', required=False)
+        input = parse.parse_args()
+        return controllers.get_users(input.get('username', None))
 
-        return controllers.get_users(username)
-
+    @swagger.doc(SwgHelper.Operation(
+        tags=['user'],
+        description='创建用户',
+        parameters=[
+            SwgHelper.Parameter('username',required=True),
+            SwgHelper.Parameter('password',required=True),
+            SwgHelper.Parameter('avator'),
+            SwgHelper.Parameter('email'),
+        ],
+        security=[SwgHelper.SecurityRequire('jwt')],
+        responses={
+            '200': SwgHelper.Response(description="成功")
+        }))
     @jwt_required()
     @helpers.standardize_api_response
     def post(self):

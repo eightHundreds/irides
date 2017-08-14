@@ -129,3 +129,45 @@ def standardize_api_response(function):
             status_code, description, data])), status_code[-1]
 
     return make_response
+
+
+class SwgHelper:
+    @staticmethod
+    def Operation(tags: list = [],
+                  description: str = '',
+                  parameters: list = None,
+                  security: list = None,
+                  responses: object = None) -> object:
+        d = locals()
+        return d
+
+    @staticmethod
+    def Parameter(name='未填写', _in="formData",required=False , description="描述未填写", type="string", default='默认值未填写', **kwargs):
+        d=locals()
+        d.pop('_in')
+        d.update({'in':_in})
+        d.update(kwargs)
+        d.pop('kwargs')
+        return d
+
+    @staticmethod
+    def Item(type='string'):
+        d = dict()
+        d.update(locals())
+        return d
+
+    @staticmethod
+    def Response(description="描述未填写",schema=None,example=None,**kwargs):
+        d = kwargs
+        d.update({"description": description})
+        if schema:
+            d.update({"schema": schema})
+        if example:
+            #Reponse下有example和examples属性,两个属性不能同时使用
+            d.update({"examples": {"application/json": example}})
+        return d
+    @staticmethod
+    def SecurityRequire(name):
+        d=dict()
+        d.update({name:[]})
+        return d

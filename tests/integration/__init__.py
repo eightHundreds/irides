@@ -8,7 +8,7 @@ def get_jwt_auth_header(username, password, client):
     """
 
     payload = {'username': username, 'password': password}
-    auth_response = client.post('/auth', data=json.dumps(payload))
+    auth_response = client.post('api/auth', data=json.dumps(payload))
 
     if auth_response.status_code != 200:
         raise RuntimeError(auth_response.data.decode('utf-8'))

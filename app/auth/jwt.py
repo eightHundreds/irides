@@ -9,10 +9,11 @@ class UserLoginSchema(Schema):
     properties = {
         'username': {
             'type': 'string',
-            "example": 'something'
+            "example": 'admin'
         },
         'password': {
-            'type': 'object'
+            'type': 'string',
+            "example":'password'
         }
     }
 

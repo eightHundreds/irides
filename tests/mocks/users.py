@@ -5,7 +5,8 @@ from app.extensions import db
 
 @pytest.fixture(scope='function')
 def mock_user():
-    """Returns a function (clojuse) to createa a mock.
+    """
+    返回一个能生成mock_user的函数
     """
 
     _user = None

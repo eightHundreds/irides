@@ -128,7 +128,7 @@ def append_doc(app):
                                       "type": "apiKey",
                                       "name": "Authorization",
                                       "in": "header",
-                                      "description": "需要添加:'token AccessToken'不包括引号"
+                                      "description": "需要添加:'Bearer AccessToken'不包括引号"
                                   }
                               }
                               ))
