@@ -137,12 +137,17 @@ class SwgHelper:
                   description: str = '',
                   parameters: list = None,
                   security: list = None,
-                  responses: object = None) -> object:
+                  responses: object = None,
+                  reqparser:object=None) -> object:
         d = locals()
+        if not reqparser:
+            d.pop('reqparser')
+        else:
+            d.pop('parameters')
         return d
 
     @staticmethod
-    def Parameter(name='未填写', _in="formData",required=False , description="描述未填写", type="string", default='默认值未填写', **kwargs):
+    def Parameter(name='未填写', _in="formData",required=False , description="描述未填写", type="string", default='默认值未填写',schema=None,**kwargs):
         d=locals()
         d.pop('_in')
         d.update({'in':_in})
