@@ -3,12 +3,19 @@ import functools
 import json
 import flask
 from passlib import hash
-from flask_restful import Api
+from flask_restful_swagger_2 import Api
 from flask_jwt import JWTError
 
 
 class MyApi(Api):
     """A simple class to keep the default flask_jwt.JWTError behaviour."""
+
+    def __init__(self, *args, **kwargs):
+        # 修改默认值,默认情况一个api对象下编写的swagger文档会挂载到某个url
+        # 但是该项目创建了多个api实例,为了让swagger文档统一到一个url,取消了上述的默认行为
+        if not kwargs.get('add_api_spec_resource'):
+            kwargs.update({'add_api_spec_resource': False})
+        super().__init__(*args, **kwargs)
 
     def handle_error(self, e):
         if isinstance(e, JWTError):
@@ -73,10 +80,8 @@ def verify_password(password, hash):
 
 
 def standardize_api_response(function):
-    """ Creates a standardized response. This function should be used as a deco
-    rator.
-    :function: The function decorated should return a dict with one of
-    the keys  bellow:
+    """ 创建标准化Api,该函数应作为装饰器使用.
+    :function: 被装饰的函数应当返回dict,该字典的键中必须有一个是下面其中一个
         success -> GET, 200
         error -> Bad Request, 400
         created -> POST, 201
@@ -101,7 +106,6 @@ def standardize_api_response(function):
 
     @functools.wraps(function)
     def make_response(*args, **kwargs):
-
         result = function(*args, **kwargs)
 
         if not set(available_result_keys) & set(result):
@@ -125,3 +129,50 @@ def standardize_api_response(function):
             status_code, description, data])), status_code[-1]
 
     return make_response
+
+
+class SwgHelper:
+    @staticmethod
+    def Operation(tags: list = [],
+                  description: str = '',
+                  parameters: list = None,
+                  security: list = None,
+                  responses: object = None,
+                  reqparser:object=None) -> object:
+        d = locals()
+        if not reqparser:
+            d.pop('reqparser')
+        else:
+            d.pop('parameters')
+        return d
+
+    @staticmethod
+    def Parameter(name='未填写', _in="formData",required=False , description="描述未填写", type="string", default='默认值未填写',schema=None,**kwargs):
+        d=locals()
+        d.pop('_in')
+        d.update({'in':_in})
+        d.update(kwargs)
+        d.pop('kwargs')
+        return d
+
+    @staticmethod
+    def Item(type='string'):
+        d = dict()
+        d.update(locals())
+        return d
+
+    @staticmethod
+    def Response(description="描述未填写",schema=None,example=None,**kwargs):
+        d = kwargs
+        d.update({"description": description})
+        if schema:
+            d.update({"schema": schema})
+        if example:
+            #Reponse下有example和examples属性,两个属性不能同时使用
+            d.update({"examples": {"application/json": example}})
+        return d
+    @staticmethod
+    def SecurityRequire(name):
+        d=dict()
+        d.update({name:[]})
+        return d

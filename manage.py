@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 import os
-from flask_script import Manager, Shell, Server
-from app import create_app
+from flask_script import Manager, Shell, Server, Command
+from app.models import User, Picture, Tags
+from app import create_app, helpers
 from app.extensions import db
-from flask_migrate import Migrate,MigrateCommand
-
-
+from flask_migrate import Migrate, MigrateCommand
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
@@ -15,7 +14,8 @@ manager = Manager(app)
 # access python shell with context
 manager.add_command(
     "shell",
-    Shell(make_context=lambda: {'app': app, 'db': db}), use_ipython=True)
+    Shell(make_context=lambda: {'app': app, 'db': db, 'user': User, 'picture': Picture, 'tags': Tags}),
+    use_ipython=True)
 
 manager.add_command(
     "startserver",
@@ -23,7 +23,28 @@ manager.add_command(
 
 manager.add_command('db', MigrateCommand)
 
+
+class SeedCommand(Command):
+    """
+    初始化数据库
+    """
+
+    def run(self):
+        self._seed_user()
+
+    def _seed_user(self):
+        _user = User(
+            username='admin',
+            password=helpers.encrypt_password('password'),
+            email="test@qq.com",
+            avator="",
+        )
+        db.session.add(_user)
+        db.session.commit()
+
+
+manager.add_command('seed', SeedCommand)
+
 # run the app
 if __name__ == '__main__':
     manager.run()
-

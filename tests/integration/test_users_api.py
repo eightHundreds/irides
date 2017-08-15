@@ -1,9 +1,9 @@
 import json
 
 import pytest
-
-from . import get_jwt_auth_header
-from . import jrequest
+from app.extensions import db
+from app import models
+from . import jrequest, get_jwt_auth_header
 from tests import clear_db
 
 unauthorized_scenarios = [
@@ -105,7 +105,7 @@ def test_update_an_user_valid_username(client, mock_user):
         'username': 'it works',
         'password': 'password',
         'avator': '',
-        'email': 'test@qq.com'
+        'email': 'test123@qq.com'
     })
 
     response = jrequest('PUT', '/api/user', client, jwt_header, data=payload)
@@ -119,6 +119,10 @@ def test_update_an_user_valid_username(client, mock_user):
     }
 
     assert sorted(response.items()) == sorted(expected.items())
+    result=models.User.query.filter_by(username='it works').all()
+    assert len(result)==1
+    assert result[0].email=='test123@qq.com'
+
 
 
 # def test_delete_an_user_invalid_user_id(client, mock_user):
@@ -166,6 +170,7 @@ def test_delete_an_user_valid_user_id(client, mock_user):
 
 
 
+
 def test_get_users_without_username(client, mock_user):
     clear_db()
     mock_user('user', 'password')
@@ -192,17 +197,18 @@ def test_get_users_without_username(client, mock_user):
 def test_get_users_specifing_username(client, mock_user):
     clear_db()
     mock_user('user', 'password')
+    mock_user('user2','password')
     jwt_header = get_jwt_auth_header('user', 'password', client)
 
     response = json.loads(jrequest(
-        'GET', '/api/users', client, jwt_header).data.decode('utf-8'))
+        'GET', '/api/users?username=%s' % 'user2', client, jwt_header).data.decode('utf-8'))
     response = json.loads(response)
 
     expected = {
         'status_code': 200,
         'data': [{
-            'id': '1',
-            'username': 'user',
+            'id': '2',
+            'username': 'user2',
             'avator': '',
             'email': 'test@qq.com'
         }],

@@ -22,6 +22,10 @@ class Config:
     MAIL_SERVER = 'smtp.163.com'
     MAIL_PORT=465
     MAIL_USE_SSL=True
+
+    #JWT
+    JWT_AUTH_URL_RULE='/api/auth'
+
     # 为了安全,不要把隐私信息直接写到这里会被git记录
     # 可以放到production.py,并用gitignore忽略该文件,或者就像下面这样放到系统环境变量
     # 注意pycharm可直接配置运行时环境变量,这样无需真的修改操作系统的环境变量
