@@ -39,3 +39,17 @@ class PicturesAPI(Resource):
         """HTTP GET. Get all pictures"""
 
         return controllers.get_pictures()
+
+
+
+
+class PictureAPI(Resource):
+
+    @jwt_required()
+    @helpers.standardize_api_response
+    def get(self, picture_id):
+        """HTTP GET, Get just one picture"""
+        return controllers.get_picture(picture_id)
+
+
+

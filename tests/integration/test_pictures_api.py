@@ -55,3 +55,34 @@ def test_get_pictures(client, mock_user, mock_picture):
     }
 
     assert sorted(response.items()) == sorted(expected.items())
+
+
+
+def test_get_picture(client, mock_user, mock_picture):
+    clear_db()
+    user = mock_user('username', 'password')
+    pic = mock_picture(user)
+
+    jwt_header = get_jwt_auth_header('username', 'password', client)
+
+    response = jrequest('GET', '/api/picture/{}'.format(pic.id), client, jwt_header)
+    response = json.loads(response.data.decode('utf-8'))
+    response =json.loads(response)
+
+    templist = []
+    for tag in pic.tags:
+        templist.append(tag.to_json())
+
+    expected = {
+        'status_code': 200,
+        'data': [{
+            'id': str(pic.id),
+            'userid': pic.userId,
+            'dsepriction': pic.despriction,
+            'adress': pic.address,
+            'tags': templist
+        }],
+        'description': 'Successful Operation',
+    }
+
+    assert sorted(response.items()) == sorted(expected.items())
