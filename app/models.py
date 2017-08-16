@@ -1,4 +1,6 @@
 from passlib.apps import custom_app_context as pwd_context  # PassLib库对密码进行hash
+
+from app import helpers
 from app.extensions import db
 
 

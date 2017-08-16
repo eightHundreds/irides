@@ -64,7 +64,7 @@ def test_create_user_with_invalid_username(app, mock_user):
 
 def test_create_user_with_valid_username(app):
     clear_db()
-    username, password, avator, email = 'valid user', 'password', '', 'test@qq.com'
+    username, password, avator, email = 'admin', 'password', '', 'test@qq.com'
 
     assert 'created' in controllers.create_or_update_user(username, password,avator,email)
 
