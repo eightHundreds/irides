@@ -1,5 +1,5 @@
 from passlib.apps import custom_app_context as pwd_context  # PassLib库对密码进行hash
-
+from datetime import datetime
 from app import helpers
 from app.extensions import db
 
@@ -12,6 +12,7 @@ class User(db.Model):
     avator = db.Column(db.String(35))
     email = db.Column(db.String(120), index=True)
     picture = db.relationship('Picture', backref='user', lazy='dynamic')
+    commnet = db.relationship('Comments', backref='user', lazy='dynamic')
     """lazy 决定了 SQLAlchemy 什么时候从数据库中加载数据"""
 
     def hash_password(self, password):
@@ -26,7 +27,8 @@ class User(db.Model):
             'username': self.username,
             'avator': self.avator,
             'email': self.email,
-            # 'picture':self.picture
+            # 'picture':self.picture,
+            # 'comment':self.comment
         }
         return json_user
 
@@ -45,17 +47,22 @@ class Picture(db.Model):
     userId = db.Column(db.Integer, db.ForeignKey('User.id'))
     tags = db.relationship(
         'Tags', secondary=relation, backref=db.backref('picture', lazy='dynamic'))
+    commnet = db.relationship('Comments', backref='picture', lazy='dynamic')
 
     def to_json(self):
-        templist = []
+        taglist = []
         for tag in self.tags:
-            templist.append(tag.to_json())
+            taglist.append(tag.to_json)
+        commlist = []
+        for comment in self.comments:
+            commlist.append(comment.to_json)
         json_pic = {
             'id': str(self.id),
             'userid': self.userId,
             'dsepriction': self.despriction,
             'adress': self.address,
-            'tags': templist
+            'tags': taglist,
+            'comments': commlist
         }
         return json_pic
 
@@ -64,9 +71,27 @@ class Tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(50))
 
+    @property
     def to_json(self):
         json_tags = {
             'id': str(self.id),
             'tag': self.tag
         }
         return json_tags
+
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    userId = db.Column(db.Integer, db.ForeignKey('User.id'))
+    picId = db.Column(db.Integer, db.ForeignKey('picture.id'))
+
+    def to_json(self):
+        json_comments = {
+            'id': str(self.id),
+            'body': self.body,
+            'timestamp': self.timestamp,
+            'userId': self.userId,
+            'picId': self.picId
+        }
+        return json_comments
