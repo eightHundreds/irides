@@ -7,7 +7,7 @@ from app.extensions import db
 def mock_picture():
 
 
-    def make_mock_picture(user=None, despriction=None, address=None):
+    def make_mock_picture(user=None, tags=None, despriction=None, address=None):
 
 
         _picture = models.Picture(
@@ -17,7 +17,7 @@ def mock_picture():
         )
 
         _picture.tags = [
-            models.Tags(tag='testtags')
+            models.Tags(tag=tags or 'testtags')
         ]
 
         db.session.add(_picture)
