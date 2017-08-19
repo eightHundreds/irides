@@ -66,7 +66,7 @@ def test_get_specific_picture(client, mock_user, mock_picture):
 
     jwt_header = get_jwt_auth_header('username', 'password', client)
 
-    response = jrequest('GET', '/api/Search?searchKey={}'.format('testtags'), client, jwt_header)
+    response = jrequest('GET', '/api/picture/Search?searchKey={}'.format('testtags'), client, jwt_header)
     response = json.loads(response.data.decode('utf-8'))
     response = json.loads(response)
 
