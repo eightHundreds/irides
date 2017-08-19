@@ -58,30 +58,41 @@ def test_get_pictures(client, mock_user, mock_picture):
 
 
 
-def test_get_picture(client, mock_user, mock_picture):
+def test_get_specific_picture(client, mock_user, mock_picture):
     clear_db()
     user = mock_user('username', 'password')
-    pic = mock_picture(user)
+    pic1 = mock_picture(user)
+    pic2 = mock_picture(user, 'testtags', 'descriptin1', 'address1')
 
     jwt_header = get_jwt_auth_header('username', 'password', client)
 
-    response = jrequest('GET', '/api/picture/{}'.format(pic.id), client, jwt_header)
+    response = jrequest('GET', '/api/Search?searchKey={}'.format('testtags'), client, jwt_header)
     response = json.loads(response.data.decode('utf-8'))
-    response =json.loads(response)
+    response = json.loads(response)
 
-    templist = []
-    for tag in pic.tags:
-        templist.append(tag.to_json())
+    templist1 = []
+    for tag in pic1.tags:
+        templist1.append(tag.to_json())
+    templist2 = []
+    for tag in pic2.tags:
+        templist2.append(tag.to_json())
 
     expected = {
         'status_code': 200,
         'data': [{
-            'id': str(pic.id),
-            'userid': pic.userId,
-            'dsepriction': pic.despriction,
-            'adress': pic.address,
-            'tags': templist
-        }],
+            'id': str(pic1.id),
+            'userid': pic1.userId,
+            'dsepriction': pic1.despriction,
+            'adress': pic1.address,
+            'tags': templist1
+        },
+            {
+                'id': str(pic2.id),
+                'userid': pic2.userId,
+                'dsepriction': pic2.despriction,
+                'adress': pic2.address,
+                'tags': templist2
+            }],
         'description': 'Successful Operation',
     }
 

@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
+from flask import request
 from app import helpers, extensions
 from . import controllers
 
@@ -47,9 +48,10 @@ class PictureAPI(Resource):
 
     @jwt_required()
     @helpers.standardize_api_response
-    def get(self, picture_id):
-        """HTTP GET, Get just one picture"""
-        return controllers.get_picture(picture_id)
+    def get(self):
+        """HTTP GET, Get specific pictures"""
+        pic_tag = request.args.get('searchKey')
+        return controllers.get_specific_picture(pic_tag)
 
 
 
