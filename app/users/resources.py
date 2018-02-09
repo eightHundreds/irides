@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from flask_jwt import jwt_required
+from flask_jwt import jwt_required,current_user
 from flask_restful_swagger_2 import swagger, Schema
 from flask import current_app, request
 from app import helpers, extensions, UserLoginSchema
@@ -75,7 +75,11 @@ class UsersAPI(Resource):
 
 
 class UserAPI(Resource):
-    """An API to update or delete an user. """
+    """
+    An API to update or delete an user.
+    #/user/<user_id>
+    """
+
 
     @jwt_required()
     @helpers.standardize_api_response
@@ -104,3 +108,7 @@ class UserAPI(Resource):
         if controllers.is_an_available_id(user_id):
             return {'error': 'Invalid user id.'}
         return controllers.delete_user(user_id)
+
+    def get(self):
+
+        pass
