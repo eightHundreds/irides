@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/eightHundreds/irides.svg?branch=master)](https://travis-ci.org/eightHundreds/irides)
 [![codebeat badge](https://codebeat.co/badges/d536af42-3a52-4dc8-9a13-4465112bed24)](https://codebeat.co/projects/github-com-eighthundreds-irides-master)
 [![Coverage Status](https://coveralls.io/repos/github/eightHundreds/irides/badge.svg?branch=master)](https://coveralls.io/github/eightHundreds/irides?branch=master)
+[![Heroku Status](https://heroku-badge.herokuapp.com/?app=irides&root=/alive)](https://irides.herokuapp.com)
 
 fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template)
 
