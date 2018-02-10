@@ -2,13 +2,16 @@ alembic==0.9.3
 aniso8601==1.2.1
 click==6.7
 Flask==0.11.1
+Flask-Cors==3.0.3
 Flask-JWT==0.2.0
 Flask-Migrate==2.0.4
 Flask-REST==1.1
 Flask-RESTful==0.3.5
+flask-restful-swagger-2==0.35
 Flask-Script==2.0.5
 Flask-SQLAlchemy==2.2
 Flask-WTF==0.12
+gunicorn==19.7.1
 itsdangerous==0.24
 Jinja2==2.8
 Mako==1.0.7
@@ -22,5 +25,3 @@ six==1.10.0
 SQLAlchemy==1.1.11
 Werkzeug==0.12.2
 WTForms==2.1
-flask-restful-swagger-2==0.35
-Flask-Cors==3.0.3

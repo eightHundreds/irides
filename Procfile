@@ -1,1 +1,1 @@
-web: python manage.py startserver
+web: gunicorn -b 0.0.0.0:$PORT manage:app
