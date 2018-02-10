@@ -1,5 +1,5 @@
 from flask import render_template, request, jsonify
-from . import main
+from . import blueprint as main
 
 
 @main.app_errorhandler(404)

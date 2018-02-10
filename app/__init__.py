@@ -49,10 +49,10 @@ def register_blueprints(app):
     :returns: None
 
     """
-    from . import users, pictures
+    from . import users, pictures,main
     app.register_blueprint(users.blueprint)
     app.register_blueprint(pictures.blueprint)
-
+    app.register_blueprint(main.blueprint)
 
 def append_doc(app):
     """
