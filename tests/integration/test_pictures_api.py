@@ -1,8 +1,6 @@
 import json
-
 import pytest
-from app import models
-from app.extensions import db
+
 from . import jrequest, get_jwt_auth_header
 from tests import clear_db
 
@@ -23,17 +21,8 @@ def test_get_pictures(client, mock_user, mock_picture):
     clear_db()
     user = mock_user('user', 'password')
     pic = mock_picture(user)
-    # pic = models.Picture(
-    #     userId=str(user.id),
-    #     despriction='testdes',
-    #     address='testaddress'
-    # )
-    #
-    # db.session.add(pic)
-    # db.session.commit()
     print(pic.tags)
     jwt_header = get_jwt_auth_header('user', 'password', client)
-
     response = json.loads(jrequest(
         'GET', '/api/pictures', client, jwt_header).data.decode('utf-8'))
     response = json.loads(response)
@@ -66,7 +55,7 @@ def test_get_specific_picture(client, mock_user, mock_picture):
 
     jwt_header = get_jwt_auth_header('username', 'password', client)
 
-    response = jrequest('GET', '/api/picture/Search?searchKey={}'.format('testtags'), client, jwt_header)
+    response = jrequest('GET', '/api/pictures/Search?searchKey={}'.format('testtags'), client, jwt_header)
     response = json.loads(response.data.decode('utf-8'))
     response = json.loads(response)
 

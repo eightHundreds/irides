@@ -5,13 +5,13 @@ from app.extensions import db
 
 
 class User(db.Model):
-    __tablename__ = 'User'
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(128))
     avator = db.Column(db.String(35))
     email = db.Column(db.String(120), index=True)
-    picture = db.relationship('Picture', backref='user', lazy='dynamic')
+    pictures = db.relationship('Picture', backref='user', lazy='dynamic')
     """lazy 决定了 SQLAlchemy 什么时候从数据库中加载数据"""
 
     def hash_password(self, password):
@@ -26,25 +26,27 @@ class User(db.Model):
             'username': self.username,
             'avator': self.avator,
             'email': self.email,
-            # 'picture':self.picture
+            # 'pictures':self.pictures
         }
         return json_user
 
 
-# 关联表
-relation = db.Table('relation',
-                    db.Column('tags_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True),
-                    db.Column('picture_id', db.Integer, db.ForeignKey('picture.id'), primary_key=True)
+# 关联表tag_picture
+relation = db.Table('tag_pic_relation',
+                    db.Column('id', db.Integer, primary_key=True),
+                    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+                    db.Column('picture_id', db.Integer, db.ForeignKey('pictures.id'))
                     )
 
 
 class Picture(db.Model):
+    __tablename__ = 'pictures'
     id = db.Column(db.Integer, primary_key=True)
     despriction = db.Column(db.String(5000), unique=True)
     address = db.Column(db.String(35), unique=True)
-    userId = db.Column(db.Integer, db.ForeignKey('User.id'))
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
     tags = db.relationship(
-        'Tags', secondary=relation, backref=db.backref('picture', lazy='dynamic'))
+        'Tag', secondary=relation, backref=db.backref('pictures', lazy='dynamic'))
 
     def to_json(self):
         templist = []
@@ -60,7 +62,8 @@ class Picture(db.Model):
         return json_pic
 
 
-class Tags(db.Model):
+class Tag(db.Model):
+    __tablename__ = 'tag'
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(50))
 
@@ -70,3 +73,48 @@ class Tags(db.Model):
             'tag': self.tag
         }
         return json_tags
+
+
+class InitDataGenerator:
+    @property
+    def mock_user(self):
+        if not self._user:
+            self._user = User(
+                username='admin',
+                password=helpers.encrypt_password('password'),
+                email="test@qq.com",
+                avator="",
+            )
+        return self._user
+
+    @property
+    def mock_pictures(self):
+        if not self._pictures:
+            self._pictures = [
+                Picture(despriction="test picture1",
+                        address="https://s1.ax1x.com/2017/12/29/z06uF.png")
+            ]
+        return self._pictures
+
+    def __init__(self):
+        self._user=None
+        self._pictures=None
+        pass
+
+    def init_all(self):
+        self.init_user()
+        self.init_picture()
+
+    def init_picture(self):
+        if not User.query.filter(User.username == self.mock_user.username).first():
+            self.init_user()
+        user = User.query.first()
+        pics = self.mock_pictures.copy()
+        for i in pics:
+            i.userId = user.id
+            db.session.add(i)
+        db.session.commit()
+
+    def init_user(self):
+        db.session.add(self.mock_user)
+        db.session.commit()

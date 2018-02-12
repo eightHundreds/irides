@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 from flask_script import Manager, Shell, Server, Command
-from app.models import User, Picture, Tags
+from app.models import User, Picture, Tag
 from app import create_app, helpers
 from app.extensions import db
 from flask_migrate import Migrate, MigrateCommand
@@ -14,7 +14,7 @@ manager = Manager(app)
 # access python shell with context
 manager.add_command(
     "shell",
-    Shell(make_context=lambda: {'app': app, 'db': db, 'user': User, 'picture': Picture, 'tags': Tags}),
+    Shell(make_context=lambda: {'app': app, 'db': db, 'user': User, 'pictures': Picture, 'tags': Tag}),
     use_ipython=True)
 
 manager.add_command(

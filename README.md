@@ -22,6 +22,7 @@ fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template
 		|- controllers.py 用户模块业务逻辑
 		|- resources.py 对外api
 	...
+	|- extensions.py 插件对象
 |- migrations 数据库迁移文件
 |- doc 文档
 |- tests 测试代码
@@ -32,6 +33,7 @@ fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template
 	|- unit 单元测试
 |- .travis.yml 持续集成配置
 |- .codebeatignore 在线静态代码检测配置
+|- Procfile heroku 配置文件
 ```
 
 # 数据库迁移,命令
@@ -42,7 +44,13 @@ python manage.py db stamp 版本号 强制修改当前版本
 python manage.py db init 创建migrate文件夹 注意这时候数据库是里面的version文件夹是空de
 python manage.py db migrate -m "message" 根据模型设置生成迁移文件
 python manage.py db history 查看migrate历史
-python manage.py db upgrade 版本名 不是"message",写版本号的前缀也行
+python manage.py db upgrade [版本名|版本号前缀]
 python manage.py db downgrade
 python manage.py db current 查python manager.py看当前版本
 ```
+
+# 测试
+
+- 测试前安装requirements_test.txt
+- conftest.py中是testfixture,尽可能在测试方法(注意是测试方法而不是普通的方法)用这些对象
+- 如果测试失败,并显示 outside of application context. 只需要在测试方法传入app参数(app是个testfixture)

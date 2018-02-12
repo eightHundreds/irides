@@ -24,8 +24,6 @@ def set_jwt_handlers(jwt):
     :returns: None
     """
 
-    # 注意这里是个函数不是类,不要觉得找不到jwt在哪定义
-
     @jwt.authentication_handler
     def authenticate(username, password):
         user = models.User.query.filter_by(username=username).first()

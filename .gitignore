@@ -9,3 +9,6 @@ htmlcov/
 .idea
 tests/.cache/
 .cache/
+
+# sqlite
+app/data-table-dev.sqlite

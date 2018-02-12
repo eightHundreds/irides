@@ -1,8 +1,5 @@
-import pytest
-
 from app.users import controllers
 from tests import clear_db
-from app import helpers
 
 
 def test_is_an_available_username_with_available_user(app):

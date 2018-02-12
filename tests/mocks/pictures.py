@@ -2,14 +2,9 @@ import pytest
 from app import models
 from app.extensions import db
 
-
 @pytest.fixture(scope='function')
 def mock_picture():
-
-
     def make_mock_picture(user=None, tags=None, despriction=None, address=None):
-
-
         _picture = models.Picture(
             userId=str(user.id),
             despriction=despriction or 'testdes',
@@ -17,7 +12,7 @@ def mock_picture():
         )
 
         _picture.tags = [
-            models.Tags(tag=tags or 'testtags')
+            models.Tag(tag=tags or 'testtags')
         ]
 
         db.session.add(_picture)

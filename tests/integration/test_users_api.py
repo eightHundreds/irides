@@ -1,7 +1,6 @@
 import json
 
 import pytest
-from app.extensions import db
 from app import models
 from . import jrequest, get_jwt_auth_header
 from tests import clear_db
@@ -13,7 +12,6 @@ unauthorized_scenarios = [
 
 @pytest.mark.parametrize(
     'method, url, error, status_code ', unauthorized_scenarios)
-
 def test_unauthorized_request(method, url, error, status_code, client):
 
     response = jrequest(method, url, client)

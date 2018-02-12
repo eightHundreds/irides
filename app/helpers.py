@@ -53,7 +53,7 @@ def get_hash_algorithm(hash_algorithm):
 
 def encrypt_password(plaintext):
     """Generate a hash based on current_app HASH_ALGORITHM.
-
+    注意 该函数依赖了flask对象,在测试中必须在flask启动后该函数才能执行
     :plaintext: a string object.
     :returns: a string object.
 

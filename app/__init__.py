@@ -22,7 +22,7 @@ def create_app(config_name='default'):
     register_extensions(app)
     register_blueprints(app)
     append_doc(app)
-    jwt.set_jwt_handlers(extensions.jwt)
+
 
     return app
 
@@ -37,6 +37,7 @@ def register_extensions(app):
     """
     # 注意大小写,JWT是类,jwt才是对象
     extensions.db.init_app(app)
+    jwt.set_jwt_handlers(extensions.jwt)
     extensions.jwt.init_app(app)
     extensions.migrate.init_app(app=app, db=extensions.db)
     extensions.cors.init_app(app=app)
@@ -102,8 +103,6 @@ def append_doc(app):
         }
     })
 
-
-
     # 下面所有的配置只会影响最后生成的文档
     app.register_blueprint(
         get_swagger_blueprint(docs,
@@ -111,7 +110,7 @@ def append_doc(app):
                               title='irides Api文档',
                               api_version='1',
                               tags=[{
-                                  'name': 'picture',
+                                  'name': 'pictures',
                                   'description': '图片'
                               }, {
                                   'name': 'auth',
@@ -122,7 +121,7 @@ def append_doc(app):
                               }],
                               base_path='/api',
                               # 请求前缀,最后所有的请求都是mydomain.com/base_path/....
-                              schemes=['http'],
+                              schemes=['http','https'],
                               security_definitions={
                                   'jwt': {
                                       "type": "apiKey",
@@ -131,4 +130,4 @@ def append_doc(app):
                                       "description": "需要添加:'Bearer AccessToken'不包括引号"
                                   }
                               }
-                              ))
+                          ))
