@@ -25,8 +25,7 @@ def create_app(config_name='default'):
     register_blueprints(app)
     append_swagger_doc(app)
 
-    generator=InitDataGenerator()
-    generator.init_all()
+
 
     return app
 

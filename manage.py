@@ -41,3 +41,5 @@ manager.add_command('seed', SeedCommand)
 # run the app
 if __name__ == '__main__':
     manager.run()
+    generator = InitDataGenerator()
+    generator.init_all()
