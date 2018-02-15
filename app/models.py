@@ -106,8 +106,7 @@ class InitDataGenerator:
         self.init_picture()
 
     def init_picture(self):
-        if not User.query.filter(User.username == self.mock_user.username).first():
-            self.init_user()
+        self.init_user()
         user = User.query.first()
         pics = self.mock_pictures.copy()
         for i in pics:
@@ -116,5 +115,7 @@ class InitDataGenerator:
         db.session.commit()
 
     def init_user(self):
+        if  User.query.filter(User.username == self.mock_user.username).first():
+            return
         db.session.add(self.mock_user)
         db.session.commit()

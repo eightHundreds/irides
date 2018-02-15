@@ -5,7 +5,7 @@ from app.models import User, Picture, Tag
 from app import create_app, helpers
 from app.extensions import db
 from flask_migrate import Migrate, MigrateCommand
-
+from app.models import InitDataGenerator
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
 migrate = Migrate(app, db)
@@ -30,17 +30,10 @@ class SeedCommand(Command):
     """
 
     def run(self):
-        self._seed_user()
-
-    def _seed_user(self):
-        _user = User(
-            username='admin',
-            password=helpers.encrypt_password('password'),
-            email="test@qq.com",
-            avator="",
-        )
-        db.session.add(_user)
-        db.session.commit()
+        db.drop_all()
+        db.create_all()
+        generator=InitDataGenerator()
+        generator.init_all()
 
 
 manager.add_command('seed', SeedCommand)

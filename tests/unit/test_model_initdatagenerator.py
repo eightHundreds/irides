@@ -14,7 +14,7 @@ class TestDataGenerator(object):
         generator.init_user()
         user_in_db = User.query.filter(User.username == generator.mock_user.username).first()
 
-        assert (user_in_db != None) == True
+        assert user_in_db
 
     def test_datagenerator_pic(self,generator):
         generator.init_picture()

@@ -2,8 +2,10 @@ import flask
 from flask_restful_swagger_2 import get_swagger_blueprint
 
 from app.auth.jwt import UserLoginSchema
+from app.models import InitDataGenerator
 from . import extensions, config
 from .auth import jwt
+
 
 
 def create_app(config_name='default'):
@@ -21,8 +23,10 @@ def create_app(config_name='default'):
 
     register_extensions(app)
     register_blueprints(app)
-    append_doc(app)
+    append_swagger_doc(app)
 
+    generator=InitDataGenerator()
+    generator.init_all()
 
     return app
 
@@ -55,9 +59,9 @@ def register_blueprints(app):
     app.register_blueprint(pictures.blueprint)
     app.register_blueprint(main.blueprint)
 
-def append_doc(app):
+def append_swagger_doc(app):
     """
-    从api中获得文档,并统一添加到一个blueprint中
+    添加swagger文档,从api中获得文档,并统一添加到一个blueprint中
     :param app:
     :return:
     """
