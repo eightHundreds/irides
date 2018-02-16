@@ -1,1 +1,1 @@
-web: python manage.py gunicorn -H 0.0.0.0 -port $PORT
+web: python manage.py gunicorn -H 0.0.0.0 -p $PORT
