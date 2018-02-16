@@ -115,7 +115,7 @@ class InitDataGenerator:
         db.session.commit()
 
     def init_user(self):
-        if  User.query.filter(User.username == self.mock_user.username).first():
+        if User.query.filter(User.username == self.mock_user.username).first():
             return
         db.session.add(self.mock_user)
         db.session.commit()

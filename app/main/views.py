@@ -19,8 +19,15 @@ def new_user():
     db.session.commit()
     return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
 '''
+from app import InitDataGenerator
 from . import blueprint as main
 
 @main.route('/alive')
 def alive():
     return 'Ok'
+
+@main.route('/seed')
+def seedDb():
+    generator = InitDataGenerator()
+    generator.init_all()
+    return 'Db seeded'
