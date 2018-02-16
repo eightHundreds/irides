@@ -15,7 +15,7 @@ def create_app(config_name='default'):
     :returns: flask.Flask object
 
     """
-
+    print('config name:%s' % config_name)
     app = flask.Flask(__name__)
 
     # set the config vars using the config name and current_app
