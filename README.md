@@ -5,6 +5,7 @@
 
 fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template)
 
+[swagger doc](http://petstore.swagger.io/?url=https://irides.herokuapp.com/api/swagger.json)
 
 # 开发注意点
 
