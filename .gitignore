@@ -12,3 +12,7 @@ tests/.cache/
 
 # sqlite
 app/data-table-dev.sqlite
+
+# front end
+node_modules
+client/dist
