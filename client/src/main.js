@@ -1,6 +1,8 @@
 import babelpolyfill from "babel-polyfill";
 import Vue from "vue";
 import App from "./App";
+import 'element-ui/lib/theme-chalk/index.css'
+import ElementUI from 'element-ui'
 import VueRouter from "vue-router";
 //import store from "./vuex/store";
 //import Vuex from "vuex";
@@ -10,6 +12,7 @@ import VueRouter from "vue-router";
 import axios from "axios";
 
 Vue.use(VueRouter);
+Vue.use(ElementUI);
 
 const router = new VueRouter({
   // routes
@@ -17,7 +20,6 @@ const router = new VueRouter({
 
 new Vue({
   el: '#app',
-  //template: '<App/>',
   router,
   //store,
   //components: { App }
