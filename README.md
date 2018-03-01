@@ -3,51 +3,39 @@
 [![Coverage Status](https://coveralls.io/repos/github/eightHundreds/irides/badge.svg?branch=master)](https://coveralls.io/github/eightHundreds/irides?branch=master)
 [![Heroku Status](https://heroku-badge.herokuapp.com/?app=irides&root=/alive)](https://irides.herokuapp.com)
 
-fork from [Flask REST Template](https://github.com/alexandre/flask-rest-template)
 
 [swagger doc](http://petstore.swagger.io/?url=https://irides.herokuapp.com/api/swagger.json)
 
-# 开发注意点
+# irides
 
-之前设计时是把每个业务模块的model放到相应的业务模块文件夹下,比如`app/users/model.py`
-在统一用`app/models.py`来引用每个业务的model类,使用时只需要`from app import model`,`model.User.dosomething`
+图片网
 
-但现在有人把所有类放到`app/models.py`,但这没关系后面的开发会证明哪种设计更合适,现在只要记住,所有对model的引用都通过`from app import model`方式,这样后面如果要修改也比较方便
+# 开始
 
-# 项目结构说明
+**安装**
 
 ```
-|- app
-	|- users 用户模块
-		|- models.py 用户model类型
-		|- controllers.py 用户模块业务逻辑
-		|- resources.py 对外api
-	...
-	|- extensions.py 插件对象
-|- migrations 数据库迁移文件
-|- doc 文档
-|- tests 测试代码
-	|- conftest.py 测试固件(Test Fixture)
-	|- pytest.ini pytest配置
-	|- integration 集成测试
-	|- mocks 伪造类
-	|- unit 单元测试
-|- .travis.yml 持续集成配置
-|- .codebeatignore 在线静态代码检测配置
-|- Procfile heroku 配置文件
+pip install -r requirement.txt
+npm install 或者 yarn
 ```
 
-# 数据库迁移,命令
-注意在迁移中sqlite不支持删除数据库字段,所以要删除字段的话几乎是要删除所有的版本记录(其实删到这个字段添加的记录就行)
-每个migrate都要提交信息
+**预处理**
+
 ```
-python manage.py db stamp 版本号 强制修改当前版本
-python manage.py db init 创建migrate文件夹 注意这时候数据库是里面的version文件夹是空de
-python manage.py db migrate -m "message" 根据模型设置生成迁移文件
-python manage.py db history 查看migrate历史
-python manage.py db upgrade [版本名|版本号前缀]
-python manage.py db downgrade
-python manage.py db current 查python manager.py看当前版本
+python manage.py seed #初始化数据库
+npm run build
+```
+
+**运行**
+
+```
+python manage.py runserver
+```
+访问[http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+如果只要看前端
+```
+npm run dev
 ```
 
 # 测试
@@ -55,3 +43,12 @@ python manage.py db current 查python manager.py看当前版本
 - 测试前安装requirements_test.txt
 - conftest.py中是testfixture,尽可能在测试方法(注意是测试方法而不是普通的方法)用这些对象
 - 如果测试失败,并显示 outside of application context. 只需要在测试方法传入app参数(app是个testfixture)
+
+# 开发
+
+参考[wiki](https://github.com/eightHundreds/irides/wiki/开发)
+
+# 感谢
+
+- [Flask REST Template](https://github.com/alexandre/flask-rest-template)
+- [vue-admin-flask-example](https://github.com/bay1/vue-admin-flask-example)
