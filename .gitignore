@@ -9,6 +9,7 @@ htmlcov/
 .idea
 tests/.cache/
 .cache/
+.vscode/
 
 # sqlite
 app/data-table-dev.sqlite
@@ -16,3 +17,4 @@ app/data-table-dev.sqlite
 # front end
 node_modules
 client/dist
+npm-debug.log

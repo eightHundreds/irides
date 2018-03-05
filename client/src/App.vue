@@ -1,7 +1,6 @@
 <template>
 	<div>
     <Home />
-		hello2123
 	</div>
 </template>
 
