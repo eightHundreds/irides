@@ -38,7 +38,7 @@ prompt-toolkit==1.0.15
 psycopg2==2.7.4
 py==1.4.31
 pyflakes==1.6.0
-Pygments==2.2.0
+Pygments==2.7.4
 pylama==7.0.9
 pytest==2.9.2
 pytest-cov==2.3.0
